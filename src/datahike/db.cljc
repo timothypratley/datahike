@@ -661,7 +661,7 @@
 (def db-caches (cw/lru-cache-factory {} :threshold (:datahike-max-db-caches env 5)))
 
 (defn memoize-for [^DB db key f]
-  (if (or (zero? (:cache-size (.-config db)))
+  (if (or (zero? (or (:cache-size (.-config db)) 0))
           (zero? (.-hash db))) ;; empty db
     (f)
     (let [db-cache (cw/lookup-or-miss db-caches
